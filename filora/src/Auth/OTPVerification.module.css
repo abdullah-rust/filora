@@ -1,0 +1,107 @@
+/* src/pages/Auth/OTPVerification.module.css */
+
+/* --- Layout (Login/Signup ki tarah) --- */
+.authContainer {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-bg-dark);
+}
+
+.otpBox {
+  max-width: 480px;
+  width: 90%;
+  padding: 40px;
+  background-color: var(--color-surface);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  background-image: linear-gradient(to right, #fb923c, var(--color-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: var(--color-text-light);
+}
+
+.infoText {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin-bottom: 30px;
+}
+
+/* --- OTP Input Fields Styling --- */
+.otpInputGroup {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.otpInput {
+  width: 50px; /* Fixed width */
+  height: 50px; /* Square shape */
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary); /* Primary color for the entered digit */
+  background-color: var(--color-bg-dark);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--border-radius);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.otpInput:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.3); /* Soft glow effect */
+}
+
+/* --- Verify Button --- */
+.verifyBtn {
+  /* Primary Gradient Button */
+  background-image: linear-gradient(to right, #fb923c, var(--color-primary));
+  color: var(--color-bg-dark);
+  padding: 12px;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+  transition: opacity 0.2s;
+}
+
+.verifyBtn:hover {
+  opacity: 0.9;
+}
+
+/* --- Footer Link --- */
+.footerLink {
+  margin-top: 25px;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

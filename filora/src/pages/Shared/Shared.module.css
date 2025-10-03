@@ -1,0 +1,89 @@
+/* src/pages/Shared/Shared.module.css */
+
+.sharedContainer {
+  padding: 30px;
+  min-height: 100%;
+}
+
+/* 1. Toggle Buttons Styling */
+.toggleBar {
+  display: flex;
+  margin-bottom: 30px;
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius);
+  padding: 5px;
+  width: fit-content;
+}
+
+.toggleBtn {
+  background-color: transparent;
+  color: var(--color-text-muted);
+  border: none;
+  padding: 10px 15px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+}
+
+.activeToggle {
+  /* Active button par primary gradient ya color */
+  background-image: linear-gradient(to right, #fb923c, var(--color-primary));
+  color: var(--color-bg-dark); /* Dark text on bright button */
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+/* 2. List Styling (MyFiles se thoda milta julta) */
+.sharedListing h2 {
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  color: var(--color-text-light);
+}
+
+.fileListWrapper {
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.row {
+  display: grid;
+  /* Columns: Name Status Access Date */
+  grid-template-columns: 2fr 1.5fr 1fr 1.5fr;
+  padding: 12px 20px;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background-color 0.2s;
+  font-size: 0.95rem;
+}
+
+.row:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.headerRow {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-muted);
+  font-weight: 500;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--color-primary);
+}
+
+.nameCol {
+  font-weight: 600;
+}
+
+.statusCol,
+.accessCol,
+.dateCol {
+  color: var(--color-text-muted);
+}
+
+.noFiles {
+  text-align: center;
+  padding: 40px;
+  color: var(--color-text-muted);
+  font-style: italic;
+}

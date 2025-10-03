@@ -1,0 +1,35 @@
+/* src/pages/MyFiles/MyFiles.module.css */
+
+.myFiles {
+  /* Padding de rahe hain taa-ke kinaaron se chipka hua na lage */
+  padding: 30px;
+  /* Agar content chota ho toh bhi full height le */
+  min-height: 100%;
+}
+
+/* 1. Breadcrumb Styling */
+.breadcrumb {
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  color: var(--color-text-muted); /* Halka color for secondary info */
+}
+
+.breadcrumbLink {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.breadcrumbLink:hover {
+  color: var(--color-primary); /* Primary color on hover */
+}
+
+.currentFolder {
+  color: var(--color-text-light);
+  font-weight: 600;
+}
+
+/* 3. File Listing Area */
+.fileListing {
+  /* File list aur grid yahan render honge */
+  margin-top: 20px;
+}

@@ -1,0 +1,57 @@
+/* src/components/Sidebar/Sidebar.module.css */
+
+.sidebar {
+  /* Desktop par Fixed Width aur Height */
+  width: 250px;
+  /* Header ke niche se shuru aur screen ke bottom tak */
+  min-height: calc(100vh - 60px);
+  background-color: var(--color-surface);
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  position: sticky; /* Sticky takay scroll na ho */
+  top: 60px; /* Header ki height ke niche se shuru ho */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Responsive Adjustment for Mobile --- */
+/* Mobile par sidebar ko hide kar denge aur Hamburger menu se kholenge */
+@media (max-width: 768px) {
+  .sidebar {
+    /* Mobile par default hide rakhenge */
+    display: none;
+  }
+  /* Jab hum Navigation ko kholenge, to isay show karne ke liye ek alag class use karain ge (e.g., .sidebarOpen) */
+}
+
+/* --- Nav Links Styling (Jo SidebarNav component use karega) --- */
+.navLink {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: var(--color-text-light);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.navLink:hover {
+  background-color: rgba(
+    var(--color-primary),
+    0.1
+  ); /* Primary color ka halka sa shade */
+}
+
+.activeLink {
+  /* Jab link active ho */
+  background-color: rgba(var(--color-primary), 0.2);
+  color: var(--color-primary);
+  border-left: 4px solid var(--color-primary); /* Ek vibrant indicator */
+  padding-left: 16px; /* Border ki wajah se padding kam ki */
+}
+
+.icon {
+  margin-right: 15px;
+  font-size: 1.2rem;
+}

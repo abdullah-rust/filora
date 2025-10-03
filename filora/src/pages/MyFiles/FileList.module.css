@@ -1,0 +1,58 @@
+/* src/components/FileBrowser/FileList.module.css */
+
+.fileListContainer {
+  /* Surface se thoda halka background de sakte hain taa-ke contrast mile */
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius);
+  overflow: hidden; /* Border-radius ko maintain karne ke liye */
+}
+
+/* Har Row ka Layout (CSS Grid ya Flexbox use karain ge) */
+.row {
+  display: grid;
+  /* Grid template: Name(zyada jagah) Type Size Date */
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  padding: 12px 20px;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Halka separator */
+  transition: background-color 0.2s;
+}
+
+.row:hover {
+  /* Mouse over par halka highlight, jaisa ke dark theme apps mein hota hai */
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* File List Header */
+.headerRow {
+  background-color: var(
+    --color-bg-dark
+  ); /* Header ko dark background dete hain */
+  color: var(--color-text-muted); /* Halka color for headings */
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--color-primary); /* Primary color ka halke sa border */
+}
+
+/* Columns ki Styling */
+.nameCol {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.typeCol,
+.sizeCol,
+.dateCol {
+  color: var(--color-text-muted); /* Details ko thoda halka rakhte hain */
+  font-size: 0.9rem;
+}
+
+.fileIcon {
+  margin-right: 10px;
+  font-size: 1.1rem;
+  /* Folders/Important files ko primary color de sakte hain */
+  /* Abhi hum sirf emoji color use kar rahe hain */
+}

@@ -1,0 +1,94 @@
+/* src/pages/Welcome/Welcome.module.css */
+
+.welcomeContainer {
+  /* Poori Screen Height aur Width */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center; /* Horizontally Center */
+  align-items: center; /* Vertically Center */
+  text-align: center;
+  /* Global radial gradient yahan apply hoga */
+  background-color: var(--color-bg-dark);
+}
+
+.contentBox {
+  /* Content ko zyada bada hone se rokne ke liye */
+  max-width: 700px;
+  padding: 40px;
+  /* Ek halka sa background color de sakte hain taa-ke background se alag dikhe */
+  background-color: var(--color-surface);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Gehra Shadow */
+}
+
+/* --- Logo Styling --- */
+.logo {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  /* Aap ke logo ka gradient use kiya */
+  background-image: linear-gradient(to right, #fb923c, var(--color-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+}
+
+/* --- Text Styling --- */
+.tagline {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 15px;
+  color: var(--color-text-light);
+}
+
+.description {
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  margin-bottom: 40px;
+}
+
+/* --- Buttons Styling --- */
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn {
+  padding: 12px 30px;
+  border-radius: 30px; /* Zyada rounded */
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  min-width: 150px;
+}
+
+.primaryBtn {
+  /* Primary Gradient Button */
+  background-image: linear-gradient(to right, #fb923c, var(--color-primary));
+  color: var(--color-bg-dark);
+}
+
+.primaryBtn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.secondaryBtn {
+  /* Secondary Button: Transparent ya Outline Button */
+  background-color: transparent;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-light);
+}
+
+.secondaryBtn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.img {
+  width: 300px;
+}

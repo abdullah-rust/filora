@@ -1,0 +1,63 @@
+/* src/components/FileBrowser/Toolbar.module.css */
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Top aur bottom se halka padding */
+  padding: 15px 0;
+  /* FileList se pehle halka sa separator */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 20px;
+}
+
+/* --- Left Side Actions: New Folder Button --- */
+.newFolderBtn {
+  /* Halka sa gradient ya primary color use kar sakte hain */
+  background-color: var(--color-primary);
+  color: var(--color-bg-dark); /* Dark text */
+  border: none;
+  padding: 8px 15px;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, background-color 0.2s;
+  font-size: 0.95rem;
+}
+
+.newFolderBtn:hover {
+  opacity: 0.9;
+}
+
+/* --- Right Side Options: Sort aur View Toggle --- */
+.rightActions {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Elements ke beech ki jagah */
+}
+
+.sortSelect,
+.viewToggleBtn {
+  padding: 8px 12px;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.sortSelect {
+  /* Select box ko dark theme mein adjust karna */
+  background-color: var(--color-surface);
+  color: var(--color-text-light);
+  /* Default arrow ko hide karne ke liye additional CSS lagani padegi, abhi ke liye default rakhte hain */
+}
+
+.viewToggleBtn {
+  background-color: transparent; /* Transparent background */
+  color: var(--color-text-light);
+  transition: background-color 0.2s;
+}
+
+.viewToggleBtn:hover {
+  background-color: rgba(255, 255, 255, 0.05); /* Hover par halka highlight */
+}

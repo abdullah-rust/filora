@@ -1,0 +1,30 @@
+/* src/pages/Home.module.css */
+
+.homeContainer {
+  /* Poore page ki height tak phaila hua */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; /* Header ko top par, baaki neeche */
+  background-color: var(--color-bg-dark);
+}
+
+/* --- Main Fix: Sidebar aur Content Area ko side-by-side lana --- */
+.mainContentFlex {
+  display: flex;
+  /* Header ki height minus karke poori height lo */
+  min-height: calc(100vh - 60px);
+  flex-grow: 1;
+  width: 100%;
+}
+
+.contentArea {
+  /* Content Area ko baaki saari jagah dena */
+  flex-grow: 1;
+  /* Zaroori: Scroll sirf content area mein ho */
+  overflow-y: auto;
+  /* Yahan zaroori hai ke background color gehra ho */
+  background-color: var(--color-bg-dark);
+}
+
+/* Sidebar styling Header component se aa rahi hai */
+/* Is section mein Sidebar ki koi aur CSS ki zaroorat nahi hai */
