@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  # Redis Stack
+  redis:
+    image: redis/redis-stack:latest
+    container_name: redis-stack-server
+    ports:
+      - "6379:6379" # Redis server
+      - "8001:8001" # Redis Stack Web UI
+    volumes:
+      - redis_data:/data
+    restart: always
+
+  # PostgreSQL
+  postgres:
+    image: postgres:16
+    container_name: postgres-server
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 226622
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  # MinIO
+  minio:
+    image: minio/minio:latest
+    container_name: minio-server
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: Abdullah226622
+    ports:
+      - "9000:9000" # API access
+      - "9001:9001" # Web UI access
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    restart: always
+
+volumes:
+  redis_data:
+  postgres_data:
+  minio_data:
