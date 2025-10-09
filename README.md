@@ -1,146 +1,161 @@
-📁 Filora: A Modern, Secure File Manager
-Filora is a high-performance and secure File Management Application designed to simplify how you organize and access your documents, media, and data. It features a minimalist, Dark Theme interface and is built for exceptional responsiveness across all devices.
 
-✨ Project Overview
-Filora is engineered as a monorepo with a clear separation of concerns:
+# Filora 📁
 
-Frontend (filora/): A modern, responsive user interface built with React.
+This is a file management web app to store your files.
 
-Backend (server/): A robust, secure API layer handling authentication, file operations, and database interactions.
 
-🛠️ Tech Stack
-This project leverages the following cutting-edge technologies:
+## Tech Stack
 
-Component
+**Client:** React, jotai, module.css ,TypeScript
 
-Technology
+**Server:** Node, Express,TypeScript
 
-Description
+**Databases:** Redis,Postgresql,Mongodb
+
+## Installation
+
+1️⃣ Clone the project
+```bash
+  git clone https://github.com/abdullah-rust/filora.git
+  cd filora
+```
+2️⃣ Then run the containers in Docker
+
+```bash
+  sudo docker compose up -d
+```
+Included services:
+
+Redis Stack (6379 & 8001)
+
+PostgreSQL (5432)
+
+MinIO (9000 & 9001)
+
+
+**3️⃣ Install dependencies**
 
 Frontend
-
-React / TypeScript
-
-Dynamic UI using modern hooks and strong typing.
-
-Package Manager
-
-pnpm
-
-Fast, efficient dependency management across the monorepo.
-
+```bash
+ cd filora 
+ pnpm install 
+```
 Backend
 
-Node.js / Express
+```bash
+ cd server 
+ pnpm install 
+```
 
-RESTful API for secure and scalable operations.
+4️⃣ Configure Caddy (if installed)
 
-Database
+And put this in the caddy file
 
-PostgreSQL
-
-Reliable and scalable relational data storage.
-
-Reverse Proxy
-
-Caddy
-
-Simplified, auto-configuring reverse proxy for routing.
-
-Containerization
-
-Docker
-
-Ensures consistent environment setup for all services.
-
-🚀 Local Development Setup
-Follow these steps to get Filora up and running on your local machine using Docker for dependency management. We use pnpm as the primary package manager.
-
-1. Database Setup (Initial Run)
-Before starting the application, you must initialize the PostgreSQL database schema.
-
-Locate the database schema file at sql/schema.sql in the project root.
-
-Run the SQL queries defined in schema.sql against your local PostgreSQL instance to create the necessary tables and structure.
-
-2. Clone Repository
-Clone the project repository and navigate into the root directory:
-
-git clone [https://github.com/abdullah-rust/filora.git](https://github.com/abdullah-rust/filora.git)
-cd filora
-
-
-
-3. Start Infrastructure (Docker)
-Use Docker Compose to launch necessary infrastructure services (e.g., PostgreSQL, Redis, etc., as defined in your docker-compose.yml):
-
-# Bring up the required services in detached mode
-docker-compose up -d
-
-
-
-4. Install Dependencies & Run Frontend
-Use pnpm to install dependencies and start the frontend development server:
-
-# Install dependencies across the monorepo
-pnpm install
-
-# Navigate to the frontend directory
-cd filora
-
-# Start the React development server (runs on port 5173 by default)
-pnpm run dev
-
-
-
-5. Run Backend Server
-In a new terminal window, navigate to the backend directory and start the API server:
-
-# Navigate to the backend directory
-cd server
-
-# Start the Node.js API server (runs on port 5000 by default)
-pnpm run dev
-
-
-
-6. Set up Caddy Reverse Proxy
-Filora uses Caddy to manage proxying requests between the frontend and the backend API, ensuring proper routing and path handling.
-
-Install Caddy on your system (refer to the Caddy documentation for your OS).
-
-Create a Caddyfile (or use the one in the project root) with the following configuration:
-
-:80 {
-    # 🎯 User API and Authentication Routing
+```bash
+80: {
+    # backend server
     handle_path /api/user/* {
         reverse_proxy localhost:5000
     }
-
-    # 🌐 Frontend Routing (All other requests)
+   
+    # Frontend ke liye (baqi sab requests)
     handle {
-        reverse_proxy localhost:5173
+            reverse_proxy localhost:5173
     }
 }
 
+```
 
 
-Run Caddy from the directory containing your Caddyfile:
+## Lessons Learned
 
-caddy run
+First of all, create a .env file in our server and filora folder. Remember that the password we set in Docker should be the same as our username and password in the env file. The structure of our env file should also tell us something.
+
+5️⃣ Environment Variables
+
+```bash
+# Backend .env (server folder)
+
+PORT=5000
+DATABASE_URL=postgresql://postgres:226622@localhost:5432/filoradb
+JWT_SECRET=your jwt secret 
+REFRESH_SECRET= your jwt refresh secret 
+MINIO_ENDPOINT=localhost
+MINIO_PORT=9000
+MINIO_ACCESS_KEY=admin
+MINIO_SECRET_KEY=Abdullah226622
+MINIO_USE_SSL=false
+REDIS_URL=redis://localhost:6379
+EMAIL_USER=your email where you send otp Emails
+EMAIL_PASS=your app password
 
 
+```
 
-✅ Accessing the Application
-Once all steps are complete:
+```bash
+# fronted .env (filora folder)
 
-Open your web browser and navigate to:
+VITE_URL=localhost/api/user/public/files/
+```
 
-http://localhost:
+6️⃣ Run Development Servers   
 
+Open two terminals:
 
+Terminal 1 (Frontend)
+```bash
+ cd filora
+ pnpm run dev
+```
+Terminal 2 (Backend)
+```bash
+ cd server
+ pnpm run dev
+```
 
-Caddy is configured to listen on port 80, so simply accessing http://localhost will route traffic correctly to the application and the API.
+And after that localhost par 
 
-🤝 Contributing
-Contributions are welcome! Please refer to the guidelines in the CONTRIBUTING.md file.
+Open your browser and type
+
+```bash
+http://localhost
+```
+
+Notes & Tips
+
+Make sure Docker containers are running and ports are not blocked by other services (like Caddy installed on host).
+
+Use Docker service names (postgres-server, redis-stack-server, minio-server) in .env files for correct networking inside Docker.
+
+For local Vite development, ensure host: true in vite.config.js if using custom domains or reverse proxy.
+
+- Ports used:
+
+- 5000 → backend
+
+- 5173 → frontend (Vite dev server)
+
+- 6379 → Redis
+
+- 5432 → PostgreSQL
+
+- 9000 → MinIO API
+
+- 9001 → MinIO Web UI
+## Features
+
+- User authentication with OTP verification
+- Upload, download, and manage files and folders
+- MinIO object storage integration
+- Redis use for OTP verification
+- Frontend built with React, Jotai for state management
+- Frontend use localForage for 
+- Offline caching: Implemented using localForage for storing user files and folders locally.
+
+## Lessons Learned / Key Takeaways
+- Working with full-stack TypeScript
+-  Docker & Docker Compose orchestration for multiple services
+- Reverse proxy configuration using Caddy
+- Local development vs production environment handling  
+- Integrating multiple databases and caching layers 
+- Handling file storage and secure access
