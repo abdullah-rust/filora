@@ -1,0 +1,167 @@
+/* src/components/FileBrowser/FileOptionsModal.module.css (COMPLETE & UPDATED CSS) */
+
+/* 1. Backdrop/Overlay (Centering aur Blur) */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10001;
+}
+
+/* 2. Main Container (Modal) - WEB DEFAULT */
+.container {
+  width: 380px; /* Choti width for options */
+  max-width: 90vw;
+  background: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+  padding: 25px;
+  color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Close Button */
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  z-index: 10;
+}
+.closeButton:hover {
+  color: var(--color-danger); /* Red/Error color */
+}
+
+/* --- 3. Item Info Styling --- */
+.itemInfo {
+  /* Updated structure for better info display */
+  display: flex;
+  flex-direction: column; /* Type aur Name ko alag line mein */
+  align-items: flex-start;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.itemType {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.itemName {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-text-light);
+  /* Long name truncation */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* --- 4. Action Buttons Group --- */
+.actionGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.actionButton {
+  padding: 12px 20px; /* Padding barhaya */
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+  text-align: left; /* Text ko left align kiya */
+}
+
+.actionButton:hover {
+  opacity: 0.9;
+}
+
+/* Specific Button Styles */
+
+/* 🌍 Set to Public Button */
+.shareButton {
+  background-color: var(--color-primary); /* Greenish color for success/share */
+  color: var(--color-bg-dark);
+}
+.shareButton:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* 🔒 Set to Private Button */
+.privateButton {
+  background-color: var(--color-info); /* Blue for Private/Security */
+  color: #fff;
+}
+.privateButton:hover {
+  background-color: var(--color-info-dark);
+}
+
+/* 🔗 Copy Link Button */
+.copyLinkButton {
+  background-color: #3a3a3a; /* Darker grey/Neutral */
+  color: var(--color-text-light);
+  border: 1px solid #555;
+}
+.copyLinkButton:hover {
+  background-color: #4a4a4a;
+  border-color: #777;
+}
+
+/* 🗑️ Delete Button */
+.deleteButton {
+  background-color: var(--color-danger); /* Red for Delete */
+  color: #fff;
+}
+.deleteButton:hover {
+  background-color: var(--color-danger-dark);
+}
+
+/* ########################################## */
+/* --- MOBILE RESPONSIVENESS (Max Width 480px) --- */
+/* ########################################## */
+@media (max-width: 480px) {
+  .container {
+    width: 95%; /* Mobile par full-width lagbhag */
+    padding: 15px;
+  }
+
+  .closeButton {
+    top: 10px;
+    right: 10px;
+  }
+
+  .itemInfo {
+    padding: 8px 0;
+    margin-bottom: 15px;
+  }
+
+  .itemName {
+    font-size: 0.9rem;
+  }
+
+  .actionButton {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+}

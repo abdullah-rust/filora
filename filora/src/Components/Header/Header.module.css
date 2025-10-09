@@ -1,0 +1,77 @@
+/* src/components/Header/Header.module.css (Updated Styles) */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  background-color: var(--color-surface);
+  padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+/* --- 1. Left Actions (Menu Icon) --- */
+.leftActions {
+  flex-basis: 33%; /* Left column ko jagah di */
+  display: flex;
+  justify-content: flex-start; /* Icon left mein rahe */
+}
+
+.menuIcon {
+  background: none;
+  border: none;
+  color: var(--color-text-light);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px;
+  transition: color 0.2s;
+}
+
+.menuIcon:hover {
+  color: var(--color-primary);
+}
+
+/* --- 2. Center Area (Logo) --- */
+.centerArea {
+  flex-basis: 33%; /* Center column ko jagah di */
+  display: flex;
+  justify-content: center; /* 🚨 Logo ko Center mein kiya */
+  /* Logo text mein khud margin 0 kiya hua hai, bas yahan justify-content: center kiya */
+}
+
+.logoText {
+  font-size: 1.5rem;
+  font-weight: 800;
+  /* Aap ke logo ka gradient wahi rahega */
+  background-image: linear-gradient(to right, #fb923c, var(--color-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* --- 3. Right Actions (Upload Button) --- */
+.actions {
+  flex-basis: 33%; /* Right column ko jagah di */
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  justify-content: flex-end; /* 🚨 Buttons right mein rahein */
+}
+
+.uploadButton {
+  /* ... (Existing uploadButton styles wahi rahengi) ... */
+  background-image: linear-gradient(to right, #fb923c, var(--color-primary));
+  color: var(--color-bg-dark);
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.uploadButton:hover {
+  opacity: 0.9;
+}

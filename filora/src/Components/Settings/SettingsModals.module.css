@@ -1,0 +1,119 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.container {
+  width: 450px;
+  max-width: 90vw;
+  background: var(--color-surface);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+  padding: 30px;
+  color: var(--color-text-light);
+  position: relative;
+}
+
+.header {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--color-primary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.closeButton:hover {
+  color: var(--color-danger);
+}
+
+.formGroup {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-light);
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.error {
+  color: var(--color-danger);
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+.submitBtn {
+  /* Primary Gradient Button */
+  background-image: linear-gradient(to right, #fb923c, var(--color-primary));
+  color: var(--color-bg-dark);
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  transition: opacity 0.2s;
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+  .container {
+    padding: 20px;
+  }
+  .header {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+  }
+  .input {
+    padding: 10px;
+  }
+  .submitBtn {
+    padding: 10px;
+  }
+}

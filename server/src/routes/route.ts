@@ -1,0 +1,40 @@
+import { Router } from "express";
+import Login from "../controller/auth/Login";
+import Signup from "../controller/auth/Signup";
+import { LoginOTP, SignupOTP } from "../controller/auth/Otp";
+import multer from "multer";
+import Upload from "../controller/fileHandling/fileUpload";
+import { CheckJwt } from "../middleware/check_jwt";
+import { loadFilesAndFolders } from "../controller/fileHandling/getdata";
+import StreamFile from "../controller/fileHandling/serveFile";
+import { createFolder } from "../controller/fileHandling/createFolder";
+import getStorageStatus from "../controller/others/StorageStatus";
+import PublicShare from "../controller/share/PublicShare";
+import PrivateShare from "../controller/share/privateShare";
+import deleteItem from "../controller/Delete/deleteFiles&folers";
+import PublicStreamFile from "../controller/fileHandling/PublicStreamFile";
+import ChangePassword from "../controller/profile/ChangePassword";
+import GetUserName from "../controller/profile/GetUserName";
+import ChangeName from "../controller/profile/ChangeName";
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+const router = Router();
+
+router.post("/login", Login);
+router.post("/signup", Signup);
+router.post("/otp", LoginOTP, SignupOTP);
+router.post("/upload/:folderId", CheckJwt, upload.array("files", 20), Upload);
+router.get("/get-data", CheckJwt, loadFilesAndFolders);
+router.get("/file/:uuid", CheckJwt, StreamFile);
+router.post("/create-folder", CheckJwt, createFolder);
+router.get("/storage-status", CheckJwt, getStorageStatus);
+router.post("/public", CheckJwt, PublicShare);
+router.post("/private", CheckJwt, PrivateShare);
+router.post("/delete", CheckJwt, deleteItem);
+router.get("/public/files/:uuid", PublicStreamFile);
+router.post("/change-password", CheckJwt, ChangePassword);
+router.get("/get-username", CheckJwt, GetUserName);
+router.post("/change-username", CheckJwt, ChangeName);
+
+export default router;

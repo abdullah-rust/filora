@@ -1,0 +1,216 @@
+/* src/components/FileBrowser/createFolder.module.css */
+
+/* 1. Backdrop/Overlay (Centering aur Blur) */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85); /* Semi-transparent dark */
+  backdrop-filter: blur(8px); /* Blur effect */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+/* 2. Main Container (Modal) */
+.container {
+  width: 500px; /* Thora chota kiya */
+  max-height: 80vh;
+  background: #1e1e1e; /* Dark background */
+  border-radius: 15px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+  padding: 30px;
+  color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Header Title */
+.headerTitle {
+  font-size: 1.8rem;
+  color: #4caf50; /* Green highlight */
+  margin-bottom: 20px;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+
+/* Close Button */
+.closeButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.closeButton:hover {
+  color: #ff5555; /* Reddish on hover */
+}
+
+/* 3. Form Styling */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.parentInfo {
+  font-size: 0.9rem;
+  color: #999;
+  margin-top: -10px;
+  padding-bottom: 5px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-weight: 500;
+  color: #f0f0f0;
+}
+
+.inputField {
+  padding: 12px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background-color: #2a2a2a;
+  color: #f0f0f0;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+.inputField:focus {
+  outline: none;
+  border-color: #4caf50; /* Green focus highlight */
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
+}
+
+.errorMessage {
+  color: #ff5555;
+  background-color: #381e1e;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+/* 4. Button Group */
+.buttonGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  padding-top: 10px;
+}
+
+.cancelButton,
+.createButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancelButton {
+  background-color: #555;
+  color: #f0f0f0;
+}
+.cancelButton:hover {
+  background-color: #666;
+}
+
+.createButton {
+  background-color: #4caf50; /* Green primary button */
+  color: #1e1e1e;
+}
+.createButton:hover:not(:disabled) {
+  background-color: #66bb6a;
+}
+.createButton:disabled {
+  background-color: #383838;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+/* src/components/FileBrowser/createFolder.module.css (Responsive) */
+
+/* 1. Backdrop/Overlay (No change needed) */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+/* 2. Main Container (Modal) - WEB DEFAULT */
+.container {
+  width: 500px; /* Default wide width */
+  max-height: 80vh;
+  background: #1e1e1e;
+  border-radius: 15px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+  padding: 30px;
+  color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* ... (HeaderTitle, CloseButton, Form Styling wahi rahen ge) ... */
+
+/* ########################################## */
+/* --- MOBILE RESPONSIVENESS (Max Width 600px) --- */
+/* ########################################## */
+@media (max-width: 600px) {
+  .container {
+    width: 90%; /* Modal ko 90% screen width diya */
+    max-width: 90%;
+    max-height: 90vh;
+    padding: 20px; /* Padding kam ki */
+  }
+
+  /* Header ko halka sa adjust karo */
+  .headerTitle {
+    font-size: 1.5rem;
+  }
+
+  .closeButton {
+    top: 15px;
+    right: 15px;
+    font-size: 1.3rem;
+  }
+
+  /* Input field ko halka sa chhota karo */
+  .inputField {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  /* Button Group ko thoda compact kiya */
+  .buttonGroup {
+    gap: 10px;
+  }
+
+  .cancelButton,
+  .createButton {
+    padding: 10px 15px;
+    font-size: 0.95rem;
+  }
+}

@@ -1,72 +1,77 @@
-// src/components/FileBrowser/FileList.tsx
+// src/components/FileBrowser/FileList.tsx (Final Split Code)
 
 import React from "react";
 import styles from "./FileList.module.css";
+// NOTE: Assuming these imports are correctly defined in your project
+import { useFetchMyfiles } from "../../Api/MyfileApi";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import FileListItem from "./FileListItem"; // ✅ New Component Import
 
-// 🎯 Backend se aane wale data ke liye Interface
-interface FileItem {
-  name: string;
-  id: number;
-  is_folder: boolean;
-  size?: string; // Backend se string (bytes) mein aa raha hai
-  mime_type?: string;
-  uuid: string;
-  // created_at, etc. bhi ho sakti hain
-}
-interface Prop {
-  fileList: any;
-  loading: any;
-  loadFolder: (id: number, name: string) => void;
-  backFolder: () => void;
-  openFile: (fileUUID: string, fileName: string, mimeType: string) => void;
-}
+import type { FileItem } from "../../Types/Types";
+import {
+  selectedFolderIdsAtom,
+  currentFolderPathAtom,
+  filesAtom,
+  fileStreamAtom,
+  fileOptionsVisibleAtom,
+  fileOptionsItemId,
+  fileOptionsItemNameAtom,
+  itemTypeOption,
+  copyLinkUUid,
+  isPublicOptionAtom,
+} from "../../states/States";
 
-// Helper function to convert Bytes to Human Readable Size
-const formatBytes = (bytes: string | undefined): string => {
-  if (!bytes) return "-";
-  const num = parseInt(bytes, 10);
-  if (num === 0) return "0 Bytes";
-  const k = 1024;
-  const sizes = ["Bytes", "KB", "MB", "GB"];
-  const i = Math.floor(Math.log(num) / Math.log(k));
-  return parseFloat((num / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
-};
+const FileList: React.FC = () => {
+  // 🎯 Fetch the data on mount
+  useFetchMyfiles();
 
-// Helper function to determine icon and type based on mime_type/is_folder
-const getItemDetails = (item: FileItem) => {
-  if (item.is_folder) {
-    return { icon: "📁", type: "Folder", sizeDisplay: "-" };
-  }
-
-  const mime = item.mime_type || "";
-  const sizeDisplay = formatBytes(item.size);
-
-  if (mime.startsWith("image/")) {
-    return { icon: "🖼️", type: "Image", sizeDisplay };
-  }
-  if (mime === "application/pdf") {
-    return { icon: "📄", type: "PDF", sizeDisplay };
-  }
-  if (mime === "application/zip" || mime === "application/x-zip-compressed") {
-    return { icon: "📦", type: "ZIP Archive", sizeDisplay };
-  }
-  if (mime.startsWith("video/")) {
-    return { icon: "📹", type: "Video", sizeDisplay };
-  }
-  if (mime.startsWith("text/")) {
-    return { icon: "📝", type: "Text File", sizeDisplay };
-  }
-  return { icon: "❓", type: "File", sizeDisplay };
-};
-
-const FileList: React.FC<Prop> = ({
-  fileList,
-  loading,
-  loadFolder,
-  backFolder,
-  openFile,
-}: Prop) => {
+  // 📦 Get global file list from Jotai
+  const fileList: FileItem[] = useAtomValue(filesAtom) || [];
+  const loading = false; // (You can add loading atom later)
   const today = new Date().toLocaleDateString();
+
+  // Jotai Setters/Getters
+  const [SelectedFileId, setSelectedFileId] = useAtom(selectedFolderIdsAtom);
+  const setStream = useSetAtom(fileStreamAtom);
+  const [FolderName, setFolderName] = useAtom(currentFolderPathAtom);
+  const setOptionsVisible = useSetAtom(fileOptionsVisibleAtom);
+  const setOptionItemName = useSetAtom(fileOptionsItemNameAtom);
+  const setOptionItemId = useSetAtom(fileOptionsItemId);
+  const SetItemOptionType = useSetAtom(itemTypeOption);
+  const setLink = useSetAtom(copyLinkUUid);
+  const SetPublicOption = useSetAtom(isPublicOptionAtom);
+
+  // 1. Option Menu Handler (Logic moved here)
+  const optionHandleclick = (
+    name: string,
+    id: number,
+    ItemType: string,
+    uuid: string,
+    is_public: boolean
+  ) => {
+    SetPublicOption(is_public);
+    setLink(uuid);
+    SetItemOptionType(ItemType);
+    setOptionItemId(id);
+    setOptionItemName(name);
+    setOptionsVisible(true);
+  };
+
+  // 2. File/Folder Click Handler (Logic moved here)
+  const handleFileClick = (file: FileItem) => {
+    if (file.is_folder) {
+      setSelectedFileId([...SelectedFileId, file.id]);
+      setFolderName([...FolderName, file.name]);
+    } else {
+      setStream({
+        fileUUID: file.uuid,
+        fileName: file.name,
+        mimeType: file.mime_type || "application/octet-stream",
+        visible: true,
+      });
+      console.log(file.uuid);
+    }
+  };
 
   return (
     <div className={styles.fileListContainer}>
@@ -76,57 +81,43 @@ const FileList: React.FC<Prop> = ({
         <div className={styles.typeCol}>Type</div>
         <div className={styles.sizeCol}>Size</div>
         <div className={styles.dateCol}>Last Modified</div>
+        <div className={styles.optionsCol}></div>
       </div>
 
       {loading && <div className={styles.loading}>Loading files...</div>}
 
-      {!loading && fileList.length === 0 && (
-        <div className={styles.empty}>This folder is empty.</div>
-      )}
-
-      {/* File/Folder Listing */}
-      <div className={styles.row} onClick={backFolder}>
+      {/* Back Button */}
+      <div
+        className={styles.row}
+        onClick={() => {
+          setSelectedFileId(SelectedFileId.slice(0, -1));
+          if (SelectedFileId.length > 0) {
+            setFolderName(FolderName.slice(0, -1));
+          }
+        }}
+      >
         <div className={styles.nameCol}>
           <span className={styles.fileIcon}>🔙</span>
-          back
+          <span className={styles.fileNameText}>...</span>
         </div>
       </div>
-      {!loading &&
-        fileList.map((file: any) => {
-          const details = getItemDetails(file);
 
-          return (
-            <div
-              key={file.uuid}
-              className={styles.row}
-              onClick={() => {
-                if (details.type == "Folder") {
-                  loadFolder(file.uuid, file.name);
-                }
-              }}
-            >
-              <div
-                className={styles.nameCol}
-                onClick={() => {
-                  if (details.type !== "Folder") {
-                    openFile(
-                      file.uuid,
-                      file.name,
-                      file.mime_type || "application/octet-stream"
-                    );
-                  }
-                }}
-              >
-                <span className={styles.fileIcon}>{details.icon}</span>
-                {file.name}
-              </div>
-              <div className={styles.typeCol}>{details.type}</div>
-              <div className={styles.sizeCol}>{details.sizeDisplay}</div>
-              {/* Last Modified/Created Date ko baad mein set karain ge */}
-              <div className={styles.dateCol}>{today}</div>
-            </div>
-          );
-        })}
+      {/* 🎯 Render actual data from API */}
+      {!loading && fileList.length > 0 ? (
+        fileList.map((file, index) => (
+          // ✅ New component use kiya aur handlers pass kiye
+          <FileListItem
+            key={file.id || index}
+            file={file}
+            index={index}
+            today={today}
+            onFileClick={() => handleFileClick(file)}
+            onOptionClick={optionHandleclick}
+          />
+        ))
+      ) : (
+        <div className={styles.emptyState}>No files found.</div>
+      )}
     </div>
   );
 };

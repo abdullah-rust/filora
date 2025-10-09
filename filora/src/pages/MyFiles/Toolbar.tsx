@@ -1,26 +1,19 @@
-// src/components/FileBrowser/Toolbar.tsx (Updated)
-
 import React from "react";
-import styles from "./Toolbar.module.css"; // Styling import kiya
+import { useSetAtom } from "jotai";
+import styles from "./Toolbar.module.css";
+import { createFolderModalAtom } from "../../states/States";
 
 const Toolbar: React.FC = () => {
-  return (
-    // Styling class lagayi
-    <div className={styles.toolbar}>
-      {/* Left Side Actions */}
-      <div className={styles.leftActions}>
-        <button className={styles.newFolderBtn}>➕ New Folder</button>
-      </div>
+  const setCreateFolderModal = useSetAtom(createFolderModalAtom);
 
-      {/* Right Side Options */}
-      <div className={styles.rightActions}>
-        <select className={styles.sortSelect}>
-          <option>Sort by Name</option>
-          <option>Sort by Date</option>
-          <option>Sort by Size</option>
-        </select>
-        <button className={styles.viewToggleBtn}>
-          {/* Icon Placeholder */}☰ List View
+  return (
+    <div className={styles.toolbar}>
+      <div className={styles.leftActions}>
+        <button
+          className={styles.newFolderBtn}
+          onClick={() => setCreateFolderModal(true)}
+        >
+          ➕ New Folder
         </button>
       </div>
     </div>

@@ -1,17 +1,32 @@
-/* src/components/FileBrowser/FileList.module.css */
+/* src/components/FileBrowser/FileList.module.css (COMPLETE Updated Responsive CSS with Scroll Fix) */
 
 .fileListContainer {
   /* Surface se thoda halka background de sakte hain taa-ke contrast mile */
   background-color: var(--color-surface);
   border-radius: var(--border-radius);
-  overflow: hidden; /* Border-radius ko maintain karne ke liye */
+  /* overflow: hidden; */ /* Border-radius ko maintain karne ke liye */
+
+  /* --- ZAROORI SCROLL FIX --- */
+  /* FIX: max-height = 100vh - (Header + Surrounding Margin/Padding) */
+  /* Yeh value (110px) agar kisi bade parent flex container ke andar hai 
+     to uski fixed height aur padding ko compensate karegi. 
+     Agar sidebaar aur filelist dono ek main layout container mein hain, 
+     to isay sirf header aur top/bottom padding se subtract karna chahiye. */
+  max-height: calc(
+    100vh - 280px
+  ); /* Value thoda badhaya (110px se 120px) safety ke liye */
+
+  /* IMPORTANT: Yeh property file list ko majboor karti hai ki woh 
+     body se bahar na nikle aur scroll us ke andar hi ho. */
+  overflow-y: auto; /* List items zyada hone par scroll hoga */
+  /* -------------------------------- */
 }
 
-/* Har Row ka Layout (CSS Grid ya Flexbox use karain ge) */
+/* --- 1. DEFAULT/WEB LAYOUT (Grid) --- */
 .row {
   display: grid;
-  /* Grid template: Name(zyada jagah) Type Size Date */
-  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  /* Grid template: Name(2fr) Type(1fr) Size(1fr) Date(1.5fr) Options(0.2fr) */
+  grid-template-columns: 2fr 1fr 1fr 1.5fr 0.2fr;
   padding: 12px 20px;
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Halka separator */
@@ -19,40 +34,135 @@
 }
 
 .row:hover {
-  /* Mouse over par halka highlight, jaisa ke dark theme apps mein hota hai */
   background-color: rgba(255, 255, 255, 0.05);
 }
 
 /* File List Header */
 .headerRow {
-  background-color: var(
-    --color-bg-dark
-  ); /* Header ko dark background dete hain */
-  color: var(--color-text-muted); /* Halka color for headings */
+  /* Grid template: Name(2fr) Type(1fr) Size(1fr) Date(1.5fr) Options(0.2fr) */
+  grid-template-columns: 2fr 1fr 1fr 1.5fr 0.2fr;
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-muted);
   font-weight: 500;
   font-size: 0.9rem;
   padding: 15px 20px;
-  border-bottom: 1px solid var(--color-primary); /* Primary color ka halke sa border */
+  border-bottom: 1px solid var(--color-primary);
+  position: sticky; /* Header ko list ke top par chipka do */
+  top: 0;
+  z-index: 10;
 }
 
-/* Columns ki Styling */
+/* Columns ki Styling (Web wahi rahegi) */
 .nameCol {
   display: flex;
   align-items: center;
   font-weight: 600;
   cursor: pointer;
+  overflow: hidden; /* ✅ Truncation ke liye zaroori */
+}
+
+/* ✅ File Name Truncation (Long name ko cut karna) */
+.fileNameText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0; /* Flex context mein zaroori */
 }
 
 .typeCol,
 .sizeCol,
 .dateCol {
-  color: var(--color-text-muted); /* Details ko thoda halka rakhte hain */
+  color: var(--color-text-muted);
   font-size: 0.9rem;
 }
 
 .fileIcon {
   margin-right: 10px;
   font-size: 1.1rem;
-  /* Folders/Important files ko primary color de sakte hain */
-  /* Abhi hum sirf emoji color use kar rahe hain */
+  flex-shrink: 0; /* Icon ko hamesha poori jagah do */
+}
+
+/* 🎯 Naye Options Column ke styles */
+.optionsCol {
+  display: flex;
+  justify-content: flex-end; /* Dots ko right mein rakho */
+  align-items: center;
+}
+
+.optionsButton {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 5px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.optionsButton:hover {
+  color: var(--color-primary);
+}
+
+/* 🔙 Disabled Back Row */
+.disabledRow {
+  opacity: 0.5;
+  pointer-events: none;
+  /* Optional: Agar Back Button row ko hover se bhi rokna ho */
+  background-color: transparent !important;
+}
+
+/* ########################################## */
+/* --- 2. MOBILE RESPONSIVENESS (Max Width 768px) --- */
+/* ########################################## */
+@media (max-width: 768px) {
+  .fileListContainer {
+    /* Mobile par calculation adjust ho sakti hai (Header/UI chhota hota hai) */
+    max-height: calc(100vh - 280px); /* Example value for mobile */
+  }
+
+  /* Rows ka layout change karo: Ab 3 columns (Name, Type, Options) */
+  .row {
+    /* Grid template: Name(3fr) Type(1fr) Options(0.3fr) */
+    grid-template-columns: 3fr 1fr 0.3fr;
+    padding: 12px 15px; /* Padding kam ki */
+  }
+
+  /* Header Row ka layout bhi change karo */
+  .headerRow {
+    grid-template-columns: 3fr 1fr 0.3fr;
+    padding: 15px 15px;
+  }
+
+  /* Size aur Date columns ko mobile par chhupa do */
+  .row:not(.headerRow) .sizeCol,
+  .row:not(.headerRow) .dateCol {
+    display: none;
+  }
+
+  /* Header mein bhi Size aur Date ko chhupa do */
+  .headerRow .sizeCol,
+  .headerRow .dateCol {
+    display: none;
+  }
+
+  /* Name column ko halka sa style: name/type/size (sub-info) ka plan */
+  .nameCol {
+    font-size: 0.95rem;
+  }
+
+  .typeCol {
+    text-align: right; /* Type ko right mein align kiya */
+    font-size: 0.8rem;
+  }
+
+  /* Options column ko visible rakho aur adjust karo */
+  .optionsCol {
+    justify-content: center;
+  }
+
+  .optionsButton {
+    font-size: 1rem;
+    padding: 5px;
+  }
 }

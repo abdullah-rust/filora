@@ -1,13 +1,15 @@
 // src/pages/Auth/Signup.tsx
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Signup.module.css"; // Common styles ya naya file use karain ge
-import AlertMessage from "../components/AlertMessage/AlertMessage";
+import AlertMessage from "./AlertMessage/AlertMessage";
 import { api } from "../global/api";
 import { useNavigate } from "react-router-dom";
+import localforage from "localforage";
 
 const Signup: React.FC = () => {
   // States for form inputs
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,10 +19,33 @@ const Signup: React.FC = () => {
     message: string;
     type: "success" | "error" | "info";
   } | null>(null);
+
+  const [loading, setLoading] = useState(true); // ✅ for smooth render
+
+  useEffect(() => {
+    const checkLogin = async () => {
+      try {
+        const check = await localforage.getItem("is_login");
+
+        if (check) {
+          // ✅ Agar already logged in hai → Home page bhej do
+          navigate("/", { replace: true });
+        }
+      } catch (err) {
+        console.error("Error checking login:", err);
+      } finally {
+        setLoading(false); // ✅ render only after check
+      }
+    };
+
+    checkLogin();
+  }, [navigate]);
+
+  if (loading) return null;
+
   // States for password visibility
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const navigate = useNavigate();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();

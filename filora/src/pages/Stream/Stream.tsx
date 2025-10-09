@@ -1,31 +1,30 @@
-// src/components/FileBrowser/Stream.tsx
 import styles from "./Stream.module.css";
 import { useState, useEffect } from "react";
-import { api } from "../../global/api";
+import { useAtom } from "jotai";
+import { fileStreamAtom } from "../../states/States";
+import { fetchFileBlob } from "../../Api/fetchFileBlob";
+import {
+  getBlobFromCache,
+  saveBlobToCache,
+} from "../../utils/localForageUtils";
 
-interface Prop {
-  fileUUID: string;
-  fileName: string;
-  mimeType: string;
-  onClose: () => void;
-}
+export default function Stream() {
+  const [streamData, setStreamData] = useAtom(fileStreamAtom);
+  const { fileUUID, fileName, mimeType, visible } = streamData;
 
-export default function Stream({
-  fileUUID,
-  fileName,
-  mimeType,
-  onClose,
-}: Prop) {
+  // ✅ Local UI states
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const isImage = mimeType.startsWith("image/");
-  const isVideo = mimeType.startsWith("video/");
+  // ✅ Mime type checks
+  const isImage = mimeType?.startsWith("image/") ?? false;
+  const isVideo = mimeType?.startsWith("video/") ?? false;
   const requiresDownload = !isImage && !isVideo;
 
-  // 🚀 Preview fetch effect
+  // ✅ Load file preview (image/video)
   useEffect(() => {
+    if (!fileUUID || !mimeType) return;
     if (requiresDownload) {
       setLoading(false);
       return;
@@ -33,55 +32,69 @@ export default function Stream({
 
     let isActive = true;
     let currentBlobUrl: string | null = null;
+    const cacheKey = `preview-${fileUUID}`;
 
-    const fetchPreview = async () => {
+    const loadPreview = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        const response = await api.get(`/file/${fileUUID}`, {
-          responseType: "blob",
-        });
+        // 🔹 1️⃣ Try to load from cache first
+        const cachedBlob = await getBlobFromCache(cacheKey);
 
+        if (cachedBlob) {
+          const cachedUrl = URL.createObjectURL(cachedBlob);
+          currentBlobUrl = cachedUrl;
+          setBlobUrl(cachedUrl);
+          setLoading(false);
+          console.log("✅ Showing cached preview");
+          return; // 🚀 No need to fetch online
+        }
+
+        // 🔹 2️⃣ If not cached → fetch from API
+        const { blobUrl, blob } = await fetchFileBlob(fileUUID, mimeType);
         if (!isActive) return;
 
-        // Blob create karo
-        const blob = new Blob([response.data], { type: mimeType });
-        currentBlobUrl = URL.createObjectURL(blob);
-
-        setBlobUrl(currentBlobUrl);
+        currentBlobUrl = blobUrl;
+        setBlobUrl(blobUrl);
         setLoading(false);
-      } catch (err: any) {
-        console.error("❌ Preview fetch failed:", err);
-        if (!isActive) return;
 
-        setError(err.response?.data?.message || "Failed to load preview");
+        // 🔹 3️⃣ Save fetched blob in local cache
+        await saveBlobToCache(cacheKey, blob);
+      } catch (err: any) {
+        console.error("❌ Failed to load preview:", err);
+        if (!isActive) return;
+        setError(err.message || "Failed to load file. Try again later.");
         setLoading(false);
       }
     };
 
-    fetchPreview();
+    loadPreview();
 
-    // Cleanup function
     return () => {
       isActive = false;
-      if (currentBlobUrl) {
-        URL.revokeObjectURL(currentBlobUrl);
-      }
+      if (currentBlobUrl) URL.revokeObjectURL(currentBlobUrl);
     };
   }, [fileUUID, mimeType, requiresDownload]);
 
-  // 📥 Download handler
+  // ✅ Close handler
+  const handleClose = () => {
+    setStreamData({
+      fileUUID: null,
+      fileName: null,
+      mimeType: null,
+      visible: false,
+    });
+  };
+
+  // ✅ Early return if no file visible
+  if (!visible || !fileUUID || !fileName || !mimeType) return null;
+
+  // ✅ Download handler (reuse utility function)
   const handleDownload = async () => {
     try {
-      const response = await api.get(`/file/${fileUUID}`, {
-        responseType: "blob",
-      });
-
-      // Download link create karo
-      const downloadUrl = window.URL.createObjectURL(
-        new Blob([response.data], { type: mimeType })
-      );
+      const { blob } = await fetchFileBlob(fileUUID, mimeType);
+      const downloadUrl = URL.createObjectURL(blob);
 
       const link = document.createElement("a");
       link.href = downloadUrl;
@@ -90,17 +103,15 @@ export default function Stream({
       link.click();
       document.body.removeChild(link);
 
-      // Cleanup
-      window.URL.revokeObjectURL(downloadUrl);
+      URL.revokeObjectURL(downloadUrl);
     } catch (error) {
       console.error("❌ Download failed:", error);
       alert("Download failed. Please try again.");
     }
   };
 
-  // 🎨 Content render
+  // ✅ Dynamic content rendering
   let content;
-
   if (loading) {
     content = (
       <div className={styles.loading}>
@@ -120,29 +131,12 @@ export default function Stream({
     );
   } else if (blobUrl && isImage) {
     content = (
-      <img
-        src={blobUrl}
-        alt={fileName}
-        className={styles.mediaContent}
-        onError={(e) => {
-          console.error("❌ Image failed to load", e);
-          setError("Failed to load image");
-        }}
-      />
+      <img src={blobUrl} alt={fileName} className={styles.mediaContent} />
     );
   } else if (blobUrl && isVideo) {
     content = (
-      <video
-        controls
-        className={styles.mediaContent}
-        autoPlay
-        onError={(e) => {
-          console.error("❌ Video failed to load", e);
-          setError("Failed to load video");
-        }}
-      >
+      <video controls autoPlay className={styles.mediaContent}>
         <source src={blobUrl} type={mimeType} />
-        Your browser doesn't support the video tag.
       </video>
     );
   } else if (requiresDownload) {
@@ -157,10 +151,11 @@ export default function Stream({
     );
   }
 
+  // ✅ Final UI render
   return (
-    <main className={styles.backdrop} onClick={onClose}>
+    <main className={styles.backdrop} onClick={handleClose}>
       <div className={styles.container} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeButton} onClick={onClose}>
+        <button className={styles.closeButton} onClick={handleClose}>
           ✕
         </button>
 

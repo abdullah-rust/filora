@@ -1,0 +1,146 @@
+/* src/pages/Welcome/Welcome.module.css (Fully Responsive) */
+
+/* 1. Global Setup (Screen Height/Width) */
+.welcomeContainer {
+  /* Poori Screen Height aur Width */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center; /* Horizontally Center */
+  align-items: center; /* Vertically Center */
+  text-align: center;
+  background-color: var(--color-bg-dark);
+  padding: 20px; /* ✅ Mobile devices ke liye default padding diya */
+}
+
+/* 2. Content Box Styling */
+.contentBox {
+  max-width: 700px;
+  padding: 40px;
+  background-color: var(--color-surface);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  /* ✅ Mobile par content ko screen ke edge se dur rakhega */
+  width: 100%;
+}
+
+/* --- Logo Styling --- */
+.logo {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  background-image: linear-gradient(to right, #fb923c, var(--color-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+}
+
+/* --- Text Styling --- */
+.tagline {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 15px;
+  color: var(--color-text-light);
+}
+
+.description {
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  margin-bottom: 40px;
+}
+
+/* --- Buttons Styling --- */
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn {
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  min-width: 150px;
+}
+
+.primaryBtn {
+  background-image: linear-gradient(to right, #fb923c, var(--color-primary));
+  color: var(--color-bg-dark);
+}
+
+.primaryBtn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.secondaryBtn {
+  background-color: transparent;
+  border-color: var(--color-text-muted);
+  color: var(--color-text-light);
+}
+
+.secondaryBtn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.img {
+  width: 300px;
+  height: auto; /* Image height auto rakha */
+  margin-bottom: 20px;
+}
+
+/* ########################################## */
+/* --- MOBILE RESPONSIVENESS (Max Width 600px) --- */
+/* ########################################## */
+@media (max-width: 600px) {
+  .welcomeContainer {
+    /* Mobile par zyada vertical padding ki zaroorat nahi */
+    padding: 20px 10px;
+    align-items: flex-start; /* Content ko screen ke top ki taraf rakha */
+  }
+
+  .contentBox {
+    padding: 30px 20px; /* Internal padding kam kiya */
+    margin-top: 10vh; /* Screen ke top se thoda neechay */
+  }
+
+  /* Text Size Adjustments */
+  .logo {
+    font-size: 2rem; /* Logo chhota kiya */
+  }
+
+  .tagline {
+    font-size: 1.8rem; /* Tagline chhota kiya */
+    margin-bottom: 10px;
+  }
+
+  .description {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+
+  /* Image size kam kiya */
+  .img {
+    width: 100%;
+    max-width: 200px; /* Max size set kiya */
+  }
+
+  /* Button Layout Change (Flex Direction) */
+  .buttonGroup {
+    flex-direction: column; /* Buttons ko vertical stack kiya */
+    gap: 10px; /* Gap kam kiya */
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%; /* Button ko full width diya */
+    min-width: unset;
+    padding: 15px 20px; /* Padding thora barhaya for easy tap */
+    font-size: 1rem;
+  }
+}

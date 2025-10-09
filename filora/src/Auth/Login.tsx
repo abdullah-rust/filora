@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Login.module.css";
 import { api } from "../global/api";
 import { useNavigate } from "react-router-dom";
-import AlertMessage from "../components/AlertMessage/AlertMessage";
+import AlertMessage from "./AlertMessage/AlertMessage";
+import localforage from "localforage";
 
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,6 +15,29 @@ const Login: React.FC = () => {
     message: string;
     type: "success" | "error" | "info";
   } | null>(null);
+
+  const [loading, setLoading] = useState(true); // ✅ for smooth render
+
+  useEffect(() => {
+    const checkLogin = async () => {
+      try {
+        const check = await localforage.getItem("is_login");
+
+        if (check) {
+          // ✅ Agar already logged in hai → Home page bhej do
+          navigate("/", { replace: true });
+        }
+      } catch (err) {
+        console.error("Error checking login:", err);
+      } finally {
+        setLoading(false); // ✅ render only after check
+      }
+    };
+
+    checkLogin();
+  }, [navigate]);
+
+  if (loading) return null;
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
