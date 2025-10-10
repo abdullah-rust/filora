@@ -3,6 +3,7 @@
 
 This is a file management web app to store your files.
 
+![Home Page Screenshot](./home.png)
 
 ## Tech Stack
 
@@ -159,3 +160,4 @@ For local Vite development, ensure host: true in vite.config.js if using custom 
 - Local development vs production environment handling  
 - Integrating multiple databases and caching layers 
 - Handling file storage and secure access
+
